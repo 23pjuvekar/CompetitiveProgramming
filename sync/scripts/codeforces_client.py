@@ -15,6 +15,11 @@ from bs4 import BeautifulSoup
 API_STATUS_URL = "https://codeforces.com/api/user.status"
 SUBMISSION_PAGE_URL = "https://codeforces.com/contest/{contest_id}/submission/{submission_id}"
 
+_BROWSER_USER_AGENT = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+)
+
 
 class AuthExpiredError(Exception):
     """Raised when the Codeforces session cookie is missing, invalid, or expired."""
@@ -32,7 +37,7 @@ class CodeforcesClient:
         self.handle = handle
         self._session = requests.Session()
         self._session.cookies.set("JSESSIONID", session_cookie, domain="codeforces.com")
-        self._session.headers.update({"User-Agent": "Mozilla/5.0 (algo-solutions sync bot)"})
+        self._session.headers.update({"User-Agent": _BROWSER_USER_AGENT})
         # Codeforces asks API consumers to stay under one call per 2 seconds.
         self._request_delay = request_delay
 

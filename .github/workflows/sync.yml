@@ -33,4 +33,8 @@ jobs:
           LEETCODE_CSRF_TOKEN: ${{ secrets.LEETCODE_CSRF_TOKEN }}
           CF_HANDLE: ${{ secrets.CF_HANDLE }}
           CF_SESSION: ${{ secrets.CF_SESSION }}
+          # Unbuffered stdout so log lines appear in true chronological order
+          # relative to stderr — otherwise buffered prints all dump at once
+          # on exit, making failures look like they happened somewhere they didn't.
+          PYTHONUNBUFFERED: "1"
         run: python sync/scripts/sync.py

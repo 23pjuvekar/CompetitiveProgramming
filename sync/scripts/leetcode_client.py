@@ -63,8 +63,14 @@ class AuthExpiredError(Exception):
     """Raised when the LeetCode session cookie is missing, invalid, or expired."""
 
 
+_BROWSER_USER_AGENT = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+)
+
+
 class LeetCodeClient:
-    def __init__(self, session_cookie: str, csrf_token: str, request_delay: float = 0.4):
+    def __init__(self, session_cookie: str, csrf_token: str, request_delay: float = 1.0):
         if not session_cookie or not csrf_token:
             raise AuthExpiredError(
                 "LEETCODE_SESSION / LEETCODE_CSRF_TOKEN not set. "
@@ -77,36 +83,59 @@ class LeetCodeClient:
             {
                 "Content-Type": "application/json",
                 "Referer": "https://leetcode.com",
+                "Origin": "https://leetcode.com",
                 "x-csrftoken": csrf_token,
-                "User-Agent": "Mozilla/5.0 (algo-solutions sync bot)",
+                # A real browser UA matters: LeetCode's anti-automation layer can
+                # silently throttle (empty response, not an HTTP error) requests
+                # that look bot-like, especially from data-center IPs like GitHub
+                # Actions runners.
+                "User-Agent": _BROWSER_USER_AGENT,
             }
         )
         self._request_delay = request_delay
         self._question_meta_cache: dict[str, dict] = {}
 
-    def _post(self, query: str, variables: dict, operation_name: str) -> dict:
-        resp = self._session.post(
-            GRAPHQL_URL,
-            json={"query": query, "variables": variables, "operationName": operation_name},
-            timeout=30,
+    def _post(self, query: str, variables: dict, operation_name: str, retries: int = 3) -> dict:
+        backoff = 3.0
+        last_error = None
+        for attempt in range(retries):
+            resp = self._session.post(
+                GRAPHQL_URL,
+                json={"query": query, "variables": variables, "operationName": operation_name},
+                timeout=30,
+            )
+            if resp.status_code in (401, 403):
+                raise AuthExpiredError(
+                    f"LeetCode returned HTTP {resp.status_code} on '{operation_name}' — "
+                    "the session cookie is almost certainly expired."
+                )
+            resp.raise_for_status()
+            payload = resp.json()
+            if payload.get("errors"):
+                last_error = f"LeetCode GraphQL errors on '{operation_name}': {payload['errors']}"
+            else:
+                data = payload.get("data") or {}
+                # An empty/null top-level result is usually a transient
+                # rate-limit/anti-bot throttle rather than a truly dead cookie —
+                # worth retrying with backoff before giving up.
+                if not data or all(v is None for v in data.values()):
+                    last_error = f"LeetCode returned no data for '{operation_name}'"
+                else:
+                    return data
+
+            if attempt < retries - 1:
+                print(
+                    f"  [leetcode] '{operation_name}' attempt {attempt + 1}/{retries} got no data, "
+                    f"retrying in {backoff:.0f}s...",
+                    flush=True,
+                )
+                time.sleep(backoff)
+                backoff *= 2
+
+        raise AuthExpiredError(
+            f"{last_error} after {retries} attempts — session cookie is likely expired "
+            "(or LeetCode is throttling this runner harder than usual)."
         )
-        if resp.status_code in (401, 403):
-            raise AuthExpiredError(
-                f"LeetCode returned HTTP {resp.status_code} on '{operation_name}' — "
-                "the session cookie is almost certainly expired."
-            )
-        resp.raise_for_status()
-        payload = resp.json()
-        if payload.get("errors"):
-            raise AuthExpiredError(f"LeetCode GraphQL errors on '{operation_name}': {payload['errors']}")
-        data = payload.get("data") or {}
-        # An empty/null top-level result on an authenticated query almost
-        # always means the session cookie no longer maps to a logged-in user.
-        if all(v is None for v in data.values()):
-            raise AuthExpiredError(
-                f"LeetCode returned no data for '{operation_name}' — session cookie is likely expired."
-            )
-        return data
 
     def fetch_all_submissions(self) -> list[dict]:
         """Returns every submission (all statuses), newest first."""
