@@ -41,22 +41,42 @@ class CodeforcesClient:
         # Codeforces asks API consumers to stay under one call per 2 seconds.
         self._request_delay = request_delay
 
+    def _get_status_page(self, start: int, chunk: int, retries: int = 3) -> list[dict]:
+        backoff = 3.0
+        last_error = None
+        for attempt in range(retries):
+            # Use self._session (not the bare `requests` module) so this
+            # request carries the same browser User-Agent as everything
+            # else — Codeforces' anti-bot layer will 400 a request that
+            # looks scripted (e.g. the default "python-requests/x.y" UA)
+            # even though this endpoint needs no auth at all.
+            resp = self._session.get(
+                API_STATUS_URL,
+                params={"handle": self.handle, "from": start, "count": chunk},
+                timeout=30,
+            )
+            if resp.status_code == 200:
+                payload = resp.json()
+                if payload.get("status") == "OK":
+                    return payload["result"]
+                last_error = f"Codeforces API error for handle '{self.handle}': {payload.get('comment')}"
+            else:
+                last_error = f"Codeforces API returned HTTP {resp.status_code} for user.status"
+
+            if attempt < retries - 1:
+                print(f"  [codeforces] user.status attempt {attempt + 1}/{retries} failed, retrying in {backoff:.0f}s...", flush=True)
+                time.sleep(backoff)
+                backoff *= 2
+
+        raise AuthExpiredError(f"{last_error} after {retries} attempts.")
+
     def fetch_all_submissions(self) -> list[dict]:
         """Returns every submission (all verdicts), across paginated API calls."""
         submissions = []
         chunk = 1000
         start = 1
         while True:
-            resp = requests.get(
-                API_STATUS_URL,
-                params={"handle": self.handle, "from": start, "count": chunk},
-                timeout=30,
-            )
-            resp.raise_for_status()
-            payload = resp.json()
-            if payload.get("status") != "OK":
-                raise AuthExpiredError(f"Codeforces API error for handle '{self.handle}': {payload.get('comment')}")
-            batch = payload["result"]
+            batch = self._get_status_page(start, chunk)
             submissions.extend(batch)
             if len(batch) < chunk:
                 break
