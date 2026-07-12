@@ -1,0 +1,36 @@
+name: Sync solutions
+
+on:
+  schedule:
+    # Daily at 06:00 UTC. GitHub also emails the repo owner automatically
+    # whenever a scheduled run fails, which is our "cookie expired" alert.
+    - cron: "0 6 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r sync/requirements.txt
+
+      - name: Configure git identity
+        run: |
+          git config user.name "compprog-sync-bot"
+          git config user.email "actions@users.noreply.github.com"
+
+      - name: Run sync
+        env:
+          LEETCODE_SESSION: ${{ secrets.LEETCODE_SESSION }}
+          LEETCODE_CSRF_TOKEN: ${{ secrets.LEETCODE_CSRF_TOKEN }}
+          CF_HANDLE: ${{ secrets.CF_HANDLE }}
+          CF_SESSION: ${{ secrets.CF_SESSION }}
+        run: python sync/scripts/sync.py
