@@ -37,7 +37,11 @@ from leetcode_client import LeetCodeClient
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
-def sync_leetcode(client: LeetCodeClient, state: dict, dry_run: bool) -> int:
+def sync_leetcode(client: LeetCodeClient, state: dict, dry_run: bool, progress: dict) -> int:
+    """progress['changed'] is incremented in place per problem, so a caller
+    that catches an exception raised mid-loop still sees accurate progress —
+    relying on this function's return value alone would lose that count,
+    since a raised exception never reaches the `return` statement."""
     submissions = client.fetch_all_submissions()
     accepted = [s for s in submissions if s.get("statusDisplay") == "Accepted"]
 
@@ -81,11 +85,12 @@ def sync_leetcode(client: LeetCodeClient, state: dict, dry_run: bool) -> int:
                 datetime.now(timezone.utc).isoformat(),
             )
         changed += 1
+        progress["changed"] += 1
 
     return changed
 
 
-def sync_codeforces(client: CodeforcesClient, state: dict, dry_run: bool) -> int:
+def sync_codeforces(client: CodeforcesClient, state: dict, dry_run: bool, progress: dict) -> int:
     submissions = client.fetch_all_submissions()
     accepted = [s for s in submissions if s.get("verdict") == "OK"]
 
@@ -130,14 +135,12 @@ def sync_codeforces(client: CodeforcesClient, state: dict, dry_run: bool) -> int
                 datetime.now(timezone.utc).isoformat(),
             )
         changed += 1
+        progress["changed"] += 1
 
     return changed
 
 
 def commit_and_push(total_changed: int) -> None:
-    if total_changed == 0:
-        print("Nothing changed, skipping commit.")
-        return
     if not os.path.isdir(os.path.join(ROOT, ".git")):
         print("Not a git repo (or .git missing) — skipping commit.")
         return
@@ -163,16 +166,30 @@ def main() -> int:
     args = parser.parse_args()
 
     state = state_mod.load_state()
-    total_changed = 0
+    # Incremented in place by sync_leetcode/sync_codeforces, independent of
+    # their return values, so progress made before a mid-loop exception is
+    # never lost — see the docstring on sync_leetcode.
+    progress = {"changed": 0}
+
+    def persist_partial_progress() -> None:
+        # Called when a platform fails partway through: whatever was already
+        # fetched (state was updated in-place per-problem as we went) is
+        # still worth saving and committing, so a retry resumes instead of
+        # re-fetching everything from scratch.
+        if args.dry_run:
+            return
+        state_mod.save_state(state)
+        commit_and_push(progress["changed"])
 
     lc_session = os.environ.get("LEETCODE_SESSION", "")
     lc_csrf = os.environ.get("LEETCODE_CSRF_TOKEN", "")
     if lc_session and lc_csrf:
         try:
             client = LeetCodeClient(lc_session, lc_csrf)
-            total_changed += sync_leetcode(client, state, args.dry_run)
+            sync_leetcode(client, state, args.dry_run, progress)
         except LCAuthError as e:
             print(f"ERROR [leetcode]: {e}", file=sys.stderr)
+            persist_partial_progress()
             return 1
     else:
         print("Skipping LeetCode (LEETCODE_SESSION / LEETCODE_CSRF_TOKEN not set).")
@@ -182,13 +199,15 @@ def main() -> int:
     if cf_handle and cf_session:
         try:
             client = CodeforcesClient(cf_handle, cf_session)
-            total_changed += sync_codeforces(client, state, args.dry_run)
+            sync_codeforces(client, state, args.dry_run, progress)
         except CFAuthError as e:
             print(f"ERROR [codeforces]: {e}", file=sys.stderr)
+            persist_partial_progress()
             return 1
     else:
         print("Skipping Codeforces (CF_HANDLE / CF_SESSION not set).")
 
+    total_changed = progress["changed"]
     if args.dry_run:
         print(f"\nDry run complete. {total_changed} problem(s) would be synced.")
         return 0
