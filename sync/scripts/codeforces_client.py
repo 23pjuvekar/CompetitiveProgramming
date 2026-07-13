@@ -34,10 +34,16 @@ class CodeforcesClient:
                 "CF_SESSION (JSESSIONID) not set. Grab a fresh cookie from codeforces.com devtools "
                 "and update the repo secret."
             )
-        self.handle = handle
+        self.handle = handle.strip()
         self._session = requests.Session()
         self._session.cookies.set("JSESSIONID", session_cookie, domain="codeforces.com")
-        self._session.headers.update({"User-Agent": _BROWSER_USER_AGENT})
+        self._session.headers.update(
+            {
+                "User-Agent": _BROWSER_USER_AGENT,
+                "Referer": "https://codeforces.com/",
+                "Accept-Language": "en-US,en;q=0.9",
+            }
+        )
         # Codeforces asks API consumers to stay under one call per 2 seconds.
         self._request_delay = request_delay
 
@@ -61,7 +67,13 @@ class CodeforcesClient:
                     return payload["result"]
                 last_error = f"Codeforces API error for handle '{self.handle}': {payload.get('comment')}"
             else:
-                last_error = f"Codeforces API returned HTTP {resp.status_code} for user.status"
+                # Body matters here: Codeforces returns a JSON {"comment": ...}
+                # for a real API-level problem (bad handle, bad params), but a
+                # generic HTML/Cloudflare page for an IP-level block — those
+                # need very different fixes, and "HTTP 400" alone can't tell
+                # them apart.
+                body_preview = resp.text[:300].replace("\n", " ")
+                last_error = f"Codeforces API returned HTTP {resp.status_code} for user.status. Body: {body_preview!r}"
 
             if attempt < retries - 1:
                 print(f"  [codeforces] user.status attempt {attempt + 1}/{retries} failed, retrying in {backoff:.0f}s...", flush=True)
@@ -99,9 +111,15 @@ class CodeforcesClient:
             )
         source_tag = soup.select_one("#program-source-text")
         if source_tag is None:
+            # Diagnostic dump: could be a Cloudflare challenge page, a
+            # genuine "access denied" notice, or the id we're looking for
+            # having changed — the page <title> and a body snippet make it
+            # obvious which, instead of guessing blind.
+            title = soup.title.get_text(strip=True) if soup.title else "(no <title>)"
+            body_preview = soup.get_text(" ", strip=True)[:300]
             raise AuthExpiredError(
                 f"Couldn't find source code on the submission page for {submission_id} "
-                "(page layout changed, or the session is no longer valid)."
+                f"(HTTP {resp.status_code}, page title: {title!r}, body preview: {body_preview!r})."
             )
         time.sleep(self._request_delay)
         return source_tag.get_text()
