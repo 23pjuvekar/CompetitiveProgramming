@@ -1,0 +1,11 @@
+class Solution:
+    def makeFancyString(self, s: str) -> str:
+
+        res = ""
+
+        for c in s:
+            if len(res) > 1 and (res[-1] == res[-2] == c):
+                continue
+            res += c
+
+        return res
