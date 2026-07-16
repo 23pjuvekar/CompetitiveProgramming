@@ -939,6 +939,10 @@
     "submission_id": "1495325941",
     "synced_at": "2026-07-13T00:45:15.725953+00:00"
   },
+  "leetcode:count-caesar-cipher-pairs": {
+    "submission_id": "2067368960",
+    "synced_at": "2026-07-16T08:23:18.648575+00:00"
+  },
   "leetcode:count-collisions-of-monkeys-on-a-polygon": {
     "submission_id": "1953135790",
     "synced_at": "2026-07-12T23:56:28.067722+00:00"
@@ -1075,6 +1079,10 @@
     "submission_id": "1821613038",
     "synced_at": "2026-07-13T00:08:13.616198+00:00"
   },
+  "leetcode:count-number-of-bad-pairs": {
+    "submission_id": "2067333037",
+    "synced_at": "2026-07-16T08:23:25.859484+00:00"
+  },
   "leetcode:count-number-of-distinct-integers-after-reverse-operations": {
     "submission_id": "1604571835",
     "synced_at": "2026-07-13T00:32:37.370814+00:00"
@@ -1086,6 +1094,10 @@
   "leetcode:count-number-of-maximum-bitwise-or-subsets": {
     "submission_id": "1727398606",
     "synced_at": "2026-07-13T00:13:12.784495+00:00"
+  },
+  "leetcode:count-number-of-nice-subarrays": {
+    "submission_id": "2067349089",
+    "synced_at": "2026-07-16T08:23:20.976211+00:00"
   },
   "leetcode:count-number-of-pairs-with-absolute-difference-k": {
     "submission_id": "1616103783",
@@ -2743,6 +2755,10 @@
     "submission_id": "1491892339",
     "synced_at": "2026-07-13T00:47:05.651344+00:00"
   },
+  "leetcode:happy-students": {
+    "submission_id": "2068565101",
+    "synced_at": "2026-07-16T08:23:16.128137+00:00"
+  },
   "leetcode:harshad-number": {
     "submission_id": "1622882890",
     "synced_at": "2026-07-13T00:23:56.650702+00:00"
@@ -2898,6 +2914,10 @@
   "leetcode:invert-binary-tree": {
     "submission_id": "1491937661",
     "synced_at": "2026-07-13T00:46:55.438692+00:00"
+  },
+  "leetcode:is-graph-bipartite": {
+    "submission_id": "2068585312",
+    "synced_at": "2026-07-16T08:23:13.756446+00:00"
   },
   "leetcode:is-subsequence": {
     "submission_id": "1519612302",
@@ -3835,6 +3855,10 @@
     "submission_id": "1989615724",
     "synced_at": "2026-07-12T23:52:21.290687+00:00"
   },
+  "leetcode:maximum-number-of-moves-in-a-grid": {
+    "submission_id": "2068604553",
+    "synced_at": "2026-07-16T08:23:11.453537+00:00"
+  },
   "leetcode:maximum-number-of-operations-to-move-ones-to-the-end": {
     "submission_id": "1828884606",
     "synced_at": "2026-07-13T00:07:37.486484+00:00"
@@ -4486,6 +4510,10 @@
   "leetcode:minimum-number-of-flips-to-reverse-binary-string": {
     "submission_id": "1838713941",
     "synced_at": "2026-07-13T00:04:33.744522+00:00"
+  },
+  "leetcode:minimum-number-of-food-buckets-to-feed-the-hamsters": {
+    "submission_id": "2067339926",
+    "synced_at": "2026-07-16T08:23:23.136752+00:00"
   },
   "leetcode:minimum-number-of-increments-on-subarrays-to-form-a-target-array": {
     "submission_id": "1815612935",
