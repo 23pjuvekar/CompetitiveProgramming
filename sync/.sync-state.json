@@ -459,6 +459,10 @@
     "submission_id": "1990621417",
     "synced_at": "2026-07-12T23:52:08.286972+00:00"
   },
+  "leetcode:can-convert-string-in-k-moves": {
+    "submission_id": "2069855640",
+    "synced_at": "2026-07-17T08:18:48.955775+00:00"
+  },
   "leetcode:can-make-arithmetic-progression-from-sequence": {
     "submission_id": "1584378789",
     "synced_at": "2026-07-13T00:37:24.177460+00:00"
@@ -4643,6 +4647,10 @@
     "submission_id": "2062851814",
     "synced_at": "2026-07-12T23:47:08.725840+00:00"
   },
+  "leetcode:minimum-operations-to-make-array-modulo-alternating-i": {
+    "submission_id": "2069836879",
+    "synced_at": "2026-07-17T08:18:53.487480+00:00"
+  },
   "leetcode:minimum-operations-to-make-array-sum-divisible-by-k": {
     "submission_id": "1842127716",
     "synced_at": "2026-07-13T00:02:07.667445+00:00"
@@ -5566,6 +5574,10 @@
   "leetcode:range-sum-query-immutable": {
     "submission_id": "1519595540",
     "synced_at": "2026-07-13T00:41:03.288309+00:00"
+  },
+  "leetcode:rank-teams-by-votes": {
+    "submission_id": "2069847084",
+    "synced_at": "2026-07-17T08:18:51.270827+00:00"
   },
   "leetcode:rank-transform-of-an-array": {
     "submission_id": "1492917044",
