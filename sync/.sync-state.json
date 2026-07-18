@@ -1343,6 +1343,10 @@
     "submission_id": "1501279929",
     "synced_at": "2026-07-13T00:44:27.392181+00:00"
   },
+  "leetcode:count-ways-to-group-overlapping-ranges": {
+    "submission_id": "2071072866",
+    "synced_at": "2026-07-18T08:00:29.825520+00:00"
+  },
   "leetcode:counting-bits": {
     "submission_id": "1349070683",
     "synced_at": "2026-07-13T00:52:01.554082+00:00"
@@ -5479,6 +5483,10 @@
     "submission_id": "1819710276",
     "synced_at": "2026-07-13T00:08:31.127166+00:00"
   },
+  "leetcode:previous-permutation-with-one-swap": {
+    "submission_id": "2071086031",
+    "synced_at": "2026-07-18T08:00:24.963853+00:00"
+  },
   "leetcode:prime-arrangements": {
     "submission_id": "1631192977",
     "synced_at": "2026-07-13T00:20:09.052938+00:00"
@@ -6142,6 +6150,10 @@
   "leetcode:shifting-letters-ii": {
     "submission_id": "1498851312",
     "synced_at": "2026-07-13T00:44:38.533161+00:00"
+  },
+  "leetcode:short-encoding-of-words": {
+    "submission_id": "2071082102",
+    "synced_at": "2026-07-18T08:00:27.193791+00:00"
   },
   "leetcode:shortest-and-lexicographically-smallest-beautiful-string": {
     "submission_id": "1847189973",
