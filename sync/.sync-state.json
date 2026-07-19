@@ -4843,6 +4843,10 @@
     "submission_id": "1882895705",
     "synced_at": "2026-07-13T00:00:53.600395+00:00"
   },
+  "leetcode:minimum-total-cost-to-process-all-elements": {
+    "submission_id": "2072605815",
+    "synced_at": "2026-07-19T08:28:17.480144+00:00"
+  },
   "leetcode:minimum-total-operations": {
     "submission_id": "1839455950",
     "synced_at": "2026-07-13T00:03:50.197375+00:00"
@@ -5050,6 +5054,10 @@
   "leetcode:number-of-distinct-averages": {
     "submission_id": "1606052053",
     "synced_at": "2026-07-13T00:31:00.505930+00:00"
+  },
+  "leetcode:number-of-elapsed-seconds-between-two-times": {
+    "submission_id": "2072577858",
+    "synced_at": "2026-07-19T08:28:19.770483+00:00"
   },
   "leetcode:number-of-employees-who-met-the-target": {
     "submission_id": "1583389701",
@@ -5818,6 +5826,10 @@
   "leetcode:reorder-list": {
     "submission_id": "1296032543",
     "synced_at": "2026-07-13T00:53:50.389018+00:00"
+  },
+  "leetcode:reorder-routes-to-make-all-paths-lead-to-the-city-zero": {
+    "submission_id": "2072612900",
+    "synced_at": "2026-07-19T08:28:15.121904+00:00"
   },
   "leetcode:reordered-power-of-2": {
     "submission_id": "1839690387",
