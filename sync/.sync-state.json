@@ -5551,6 +5551,10 @@
     "submission_id": "1657119989",
     "synced_at": "2026-07-13T00:17:35.375986+00:00"
   },
+  "leetcode:push-dominoes": {
+    "submission_id": "2074547351",
+    "synced_at": "2026-07-21T08:38:37.995453+00:00"
+  },
   "leetcode:put-marbles-in-bags": {
     "submission_id": "1591559572",
     "synced_at": "2026-07-13T00:33:58.134447+00:00"
@@ -5971,6 +5975,10 @@
     "submission_id": "1941120795",
     "synced_at": "2026-07-12T23:58:28.538464+00:00"
   },
+  "leetcode:reward-top-k-students": {
+    "submission_id": "2074524056",
+    "synced_at": "2026-07-21T08:38:42.659476+00:00"
+  },
   "leetcode:richest-customer-wealth": {
     "submission_id": "1590512049",
     "synced_at": "2026-07-13T00:35:26.243602+00:00"
@@ -6046,6 +6054,10 @@
   "leetcode:same-tree": {
     "submission_id": "1311916650",
     "synced_at": "2026-07-13T00:53:34.013185+00:00"
+  },
+  "leetcode:satisfiability-of-equality-equations": {
+    "submission_id": "2074531684",
+    "synced_at": "2026-07-21T08:38:40.358929+00:00"
   },
   "leetcode:score-of-a-string": {
     "submission_id": "1583656582",
