@@ -3687,6 +3687,10 @@
     "submission_id": "1728009633",
     "synced_at": "2026-07-13T00:13:06.370883+00:00"
   },
+  "leetcode:maximum-beauty-of-an-array-after-applying-operation": {
+    "submission_id": "2075784412",
+    "synced_at": "2026-07-22T08:37:59.531626+00:00"
+  },
   "leetcode:maximum-binary-tree-ii": {
     "submission_id": "1973899912",
     "synced_at": "2026-07-12T23:54:15.492445+00:00"
@@ -4387,6 +4391,10 @@
     "submission_id": "1621351599",
     "synced_at": "2026-07-13T00:25:22.305396+00:00"
   },
+  "leetcode:minimum-discards-to-balance-inventory": {
+    "submission_id": "2075793178",
+    "synced_at": "2026-07-22T08:37:57.359099+00:00"
+  },
   "leetcode:minimum-distance-between-bst-nodes": {
     "submission_id": "1621145552",
     "synced_at": "2026-07-13T00:25:30.807024+00:00"
@@ -4954,6 +4962,10 @@
   "leetcode:n-th-tribonacci-number": {
     "submission_id": "1723552316",
     "synced_at": "2026-07-13T00:13:30.283660+00:00"
+  },
+  "leetcode:nearest-exit-from-entrance-in-maze": {
+    "submission_id": "2075771337",
+    "synced_at": "2026-07-22T08:38:03.656222+00:00"
   },
   "leetcode:neighboring-bitwise-xor": {
     "submission_id": "1511010390",
