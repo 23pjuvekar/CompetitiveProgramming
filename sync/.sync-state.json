@@ -4315,6 +4315,10 @@
     "submission_id": "1612863320",
     "synced_at": "2026-07-13T00:28:55.797533+00:00"
   },
+  "leetcode:minimum-cost-path-with-alternating-directions-ii": {
+    "submission_id": "2077079720",
+    "synced_at": "2026-07-23T08:39:34.842968+00:00"
+  },
   "leetcode:minimum-cost-to-acquire-required-items": {
     "submission_id": "2030777058",
     "synced_at": "2026-07-12T23:49:33.712341+00:00"
@@ -4374,6 +4378,10 @@
   "leetcode:minimum-deletions-to-make-array-beautiful": {
     "submission_id": "1543940738",
     "synced_at": "2026-07-13T00:39:41.248928+00:00"
+  },
+  "leetcode:minimum-deletions-to-make-array-divisible": {
+    "submission_id": "2077087449",
+    "synced_at": "2026-07-23T08:39:32.433513+00:00"
   },
   "leetcode:minimum-deletions-to-make-character-frequencies-unique": {
     "submission_id": "1977774896",
@@ -4842,6 +4850,10 @@
   "leetcode:minimum-time-to-complete-all-deliveries": {
     "submission_id": "1818225149",
     "synced_at": "2026-07-13T00:08:40.730023+00:00"
+  },
+  "leetcode:minimum-time-to-complete-trips": {
+    "submission_id": "2077092175",
+    "synced_at": "2026-07-23T08:39:29.533076+00:00"
   },
   "leetcode:minimum-time-to-make-rope-colorful": {
     "submission_id": "1819085479",
